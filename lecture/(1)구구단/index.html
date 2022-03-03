@@ -39,11 +39,13 @@
 							value: '',
 						}
 					});
+					this.input.focus();
 				} else {
 					this.setState({
 						result: `${this.state.value} 땡!\n`,
 						value: '',
 					});
+					this.input.focus();
 				}
 			};
 
@@ -51,12 +53,15 @@
 				this.setState({ value: (e.target.value) });
 			};
 
+			onRefInput = (c) => { this.input = c; };
+
 			render() {
+				console.log('랜더링');
 				return (
 					<React.Fragment>
 						<div>{this.state.first} 곱하기 {this.state.second}는?</div>
 						<form onSubmit={this.onSubmit}>
-							<input type="number" value={this.state.value} onChange={this.onChange} />
+							<input ref={this.onRefInput} type="number" value={this.state.value} onChange={this.onChange} />
 							<button type="submit">입력!</button>
 						</form>
 						<div>{this.state.result}</div>
@@ -67,7 +72,7 @@
 
 	</script>
 	<script type="text/babel">
-		ReactDOM.render(<><GuGuDan /><GuGuDan /><GuGuDan /></>, document.querySelector('#root'));
+		ReactDOM.render(<><GuGuDan /></>, document.querySelector('#root'));
 	</script>
 </body>
 
