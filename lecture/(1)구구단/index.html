@@ -12,15 +12,21 @@
 	<div id="root"></div>
 	<script type="text/babel">
 		class GuGuDan extends React.Component {
-			constructor(props) {
-				super(props);
-				this.state = {
-					first: Math.ceil(Math.random() * 9),
-					second: Math.ceil(Math.random() * 9),
-					value: '',
-					result: ``,
-				};
-			}
+			// constructor(props) {
+			// 	super(props);
+			// 	this.state = {
+			// 		first: Math.ceil(Math.random() * 9),
+			// 		second: Math.ceil(Math.random() * 9),
+			// 		value: '',
+			// 		result: ``,
+			// 	};
+			// }
+			state = { //실무에선 constructor보다 바로 state를 쓰는 방식을 자주쓴다.
+				first: Math.ceil(Math.random() * 9),
+				second: Math.ceil(Math.random() * 9),
+				value: '',
+				result: ``,
+			};
 
 			onSubmit = (e) => {
 				e.preventDefault();
@@ -40,20 +46,20 @@
 			};
 
 			onChange = (e) => {
-				this.setState({ value: Number(e.target.value) });
+				this.setState({ value: (e.target.value) });
 			};
 
 			render() {
 				return (
-					<div>
+					<React.Fragment>
 						<div>{this.state.first} 곱하기 {this.state.second}는?</div>
 						<form onSubmit={this.onSubmit}>
 							<input type="number" value={this.state.value} onChange={this.onChange} />
-							<button>입력!</button>
+							<button type="submit">입력!</button>
 						</form>
 						<div>{this.state.result}</div>
 						<hr /><br />
-					</div>
+					</React.Fragment>
 				);
 			}
 		}
