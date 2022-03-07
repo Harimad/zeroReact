@@ -1,63 +1,46 @@
 const React = require('react')
-const { Component } = React
+const { useState, useRef } = React
 
-class GuGuDan extends Component {
-  state = {
-    first: Math.ceil(Math.random() * 9),
-    second: Math.ceil(Math.random() * 9),
-    value: '',
-    result: ``,
+const GuGuDan = () => {
+  const [first, setFirst] = useState(Math.ceil(Math.random() * 9))
+  const [second, setSecond] = useState(Math.ceil(Math.random() * 9))
+  const [value, setValue] = useState('')
+  const [result, setResult] = useState('')
+  const inputRef = useRef(null)
+
+  const onChangeInput = e => {
+    setValue(e.target.value)
   }
 
-  onSubmit = e => {
+  const onSubmitForm = e => {
     e.preventDefault()
-    if (parseInt(this.state.value) === this.state.first * this.state.second) {
-      this.setState(prevState => {
-        return {
-          result: `${prevState.value} 정답!`,
-          first: Math.ceil(Math.random() * 9),
-          second: Math.ceil(Math.random() * 9),
-          value: '',
-        }
+    if (parseInt(value) === first * second) {
+      setResult(prevResult => {
+        return `정답: ${value}`
       })
-      this.input.focus()
+      setFirst(Math.ceil(Math.random() * 9))
+      setSecond(Math.ceil(Math.random() * 9))
+      setValue('')
+      inputRef.current.focus()
     } else {
-      this.setState({
-        result: `${this.state.value} 땡!\n`,
-        value: '',
-      })
-      this.input.focus()
+      setResult('땡')
+      setValue('')
+      inputRef.current.focus()
     }
   }
-
-  onChange = e => {
-    this.setState({ value: e.target.value })
-  }
-
-  onRefInput = c => {
-    this.input = c
-  }
-
-  render() {
-    console.log('랜더링')
-    return (
-      <React.Fragment>
-        <div>
-          {this.state.first} 곱하기 {this.state.second}는?
-        </div>
-        <form onSubmit={this.onSubmit}>
-          <input
-            ref={this.onRefInput}
-            type="number"
-            value={this.state.value}
-            onChange={this.onChange}
-          />
-          <button type="submit">입력!</button>
-        </form>
-        <div>{this.state.result}</div>
-      </React.Fragment>
-    )
-  }
+  console.log('랜더링')
+  return (
+    <>
+      <div>
+        {first} 곱하기 {second}는?
+      </div>
+      <form onSubmit={onSubmitForm}>
+        <input ref={inputRef} onChange={onChangeInput} value={value} />
+        <button>입력~~</button>
+      </form>
+      <div id="result">{result}</div>
+    </>
+  )
 }
 
 module.exports = GuGuDan

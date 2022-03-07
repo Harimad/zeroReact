@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
   name: 'gugudan-setting',
   mode: 'development',
-  devtool: 'eval',
+  devtool: 'eval', //개발끝나면 hidden-source-map로 바꾸기
   resolve: {
     extensions: ['.js', '.jsx'],
   },
@@ -15,7 +15,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?/,
+        test: /\.jsx?$/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env', '@babel/preset-react'],
