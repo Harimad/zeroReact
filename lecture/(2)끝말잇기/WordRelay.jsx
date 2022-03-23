@@ -1,53 +1,38 @@
+const { useState, useRef } = require('react')
 const React = require('react')
-const { Component } = React
 
-class WordRelay extends Component {
-  state = {
-    word:'자바스크립트',
-    value: '',
-    result: '',
-  }
-  onSubmitForm = (e) => {
-    e.preventDefault();
-    if (this.state.word[this.state.word.length-1] === this.state.value[0]) {
-      this.setState({
-        reslt: 'Correct',
-        word: this.state.value,
-        value: '',
-      })
-      this.input.focus();
-    } else {
-      this.setState({
-        result: 'Wrong',
-        value: '',
-      });
-      this.input.focus();
-    }
-  }
+const WordRelay = () => {
+	const [word, setWord] = useState('자바스크립트')
+	const [value, setValue] = useState('')
+	const [result, setResult] = useState('')
+	const inputRef = useRef(null)
 
-  onChangeInput = (e) => {
-    this.setState({value: e.target.value})
-  }
-
-  input;
-
-  onRefInput = (c) => {
-    this.input = c;
-  }
-
-  render() {
-    return (
-      <>
-        <h1>Continue Change</h1>
-        <div>{this.state.word}</div>
-        <form onSubmit={this.onSubmitForm}>
-          <input ref={this.onRefInput} value={this.state.value} onChange={this.onChangeInput}/>
-          <button>Click!</button>
-          <div>{this.state.result}</div>
-        </form>
-      </>
-    )
-  }
+	const onSubmitForm = (e) => {
+		e.preventDefault();
+		if (word[word.length-1] === value[0]) {
+			setResult('Correct');
+			setWord(value)
+			setValue('')
+		} else {
+			setResult('Wrong')
+			setValue('')
+		}
+		inputRef.current.focus()
+	}
+	const onChangeInput = (e) => {
+		setValue(e.target.value);
+	}
+	return (
+		<>
+			<div>{word}</div>
+			<form onSubmit={onSubmitForm}>
+        <label htmlFor="wordInput">글자입력</label>
+				<input id='wordInput' className='wordInput' ref={inputRef} value={value} onChange={onChangeInput}/>
+				<button>Click!</button>
+				<div>{result}</div>
+			</form>
+		</>
+	)
 }
 
 module.exports = WordRelay
