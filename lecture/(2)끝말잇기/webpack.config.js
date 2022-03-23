@@ -1,4 +1,5 @@
 const path = require('path')
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 module.exports = {
   name: 'word-relay-setting',
@@ -31,15 +32,24 @@ module.exports = {
             ],
             '@babel/preset-react',
           ],
-          plugins: ['@babel/plugin-proposal-class-properties'],
+          plugins: [
+            '@babel/plugin-proposal-class-properties',
+            'react-refresh/babel',
+          ],
         },
       },
     ],
   },
-  plugins: [],
+  plugins: [new RefreshWebpackPlugin()],
   output: {
     // 출력
-    path: path.join(__dirname, 'dist'), //C:\\users\leesh\webstorm\react-webgame\lecture\dist
+    path: path.join(__dirname, 'dist'), //__dirname은 현재 폴더임, C:\\users\leesh\webstorm\react-webgame\lecture\dist
     filename: 'app.js',
+    publicPath: '/dist',
+  },
+  devServer: {
+    devMiddleware: { publicPath: '/dist' }, //나중에 웹팩명령어 실행시 저장데이터를 생성해주는 경로
+    static: { directory: path.resolve(__dirname) }, //현재 index.html이 존재하는 폴더위치, 다른 위치에 있다면 (__dirname, '경로')하면됨
+    hot: true,
   },
 }

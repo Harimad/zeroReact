@@ -3,7 +3,7 @@ const { Component } = React
 
 class WordRelay extends Component {
   state = {
-    word:'하리매드',
+    word:'자바스크립트',
     value: '',
     result: '',
   }
@@ -38,6 +38,7 @@ class WordRelay extends Component {
   render() {
     return (
       <>
+        <h1>Continue Change</h1>
         <div>{this.state.word}</div>
         <form onSubmit={this.onSubmitForm}>
           <input ref={this.onRefInput} value={this.state.value} onChange={this.onChangeInput}/>
