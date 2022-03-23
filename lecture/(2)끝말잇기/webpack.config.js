@@ -21,13 +21,22 @@ module.exports = {
         test: /\.jsx?/, //js나 jsx파일은 아래 옛날 브라우저에도 돌아가게 하겠다
         loader: 'babel-loader',
         options: {
-          presets: ['@babel/preset-env', '@babel/preset-react'],
+          presets: [
+            [
+              '@babel/preset-env', //자동으로 옛날 브라우저 지원해주는 기능
+              {
+                targets: { browsers: ['> 1% in KR'] }, //browserlist
+                debug: true,
+              },
+            ],
+            '@babel/preset-react',
+          ],
           plugins: ['@babel/plugin-proposal-class-properties'],
         },
       },
     ],
   },
-
+  plugins: [],
   output: {
     // 출력
     path: path.join(__dirname, 'dist'), //C:\\users\leesh\webstorm\react-webgame\lecture\dist
