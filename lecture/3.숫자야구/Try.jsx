@@ -4,7 +4,7 @@ class Try extends Component {
   render() {
     const { fruit, idx } = this.props
     return (
-      <li key={fruit[0] + fruit[1]}>
+      <li>
         <div>{fruit[0]}</div>
         <div>{fruit[1]}</div>
         <div>{idx}</div>

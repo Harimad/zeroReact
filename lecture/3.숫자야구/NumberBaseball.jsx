@@ -6,14 +6,24 @@ function getNumbers() {
 }
 
 class NumberBaseball extends Component {
+  constructor(props) {
+    super(props)
+    this.onChangeInput = this.onChangeInput.bind(this)
+  }
   state = {
     result: '',
-    value: '',
+    value: '?',
     answer: getNumbers(),
     tries: [],
   }
-  onSubmitForm = () => {}
-  onChangeInput = () => {}
+  onSubmitForm = e => {
+    e.preventDefault()
+    console.log(this)
+  }
+  onChangeInput(e) {
+    console.log(this)
+    console.log(this.state.value)
+  }
 
   fruits = [
     ['배열Apple', 'Good'],
@@ -36,7 +46,7 @@ class NumberBaseball extends Component {
         <div>시도: {this.state.tries.length}</div>
         <ul>
           {this.fruits.map((fruit, i) => (
-            <Try fruit={fruit} idx={i} />
+            <Try key={fruit[0] + fruit[1]} fruit={fruit} idx={i} />
           ))}
         </ul>
       </>
