@@ -21,6 +21,12 @@ class NumberBaseballClass extends Component {
     tries: [], // push 쓰면 안된다!!
   }
 
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {}
+  // A -> B -> C -> D -> E
+  // A -> C 로 props 넘길때는 A -> B-> ... -> E 로 넘겨줘야함( B,C,D가 의도치 않은 랜더링 발생)
+  // A -> E 로 바로 넘기고 싶을때 nextContext 사용함
+  // 이걸 응용한 것이 redux임
+
   reset = () => {
     alert('게임을 다시 시작합니다!')
     this.setState({
