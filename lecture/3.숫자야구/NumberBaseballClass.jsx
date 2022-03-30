@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import Tryclass from './TryClass'
 
 function getNumbers() {
@@ -42,6 +42,8 @@ class NumberBaseballClass extends Component {
         }
       })
       this.reset()
+      // this.inputRef.focus()
+      this.inputRef.current.focus()
     } else {
       const answerArray = value.split('').map(v => parseInt(v))
       let strike = 0
@@ -52,6 +54,8 @@ class NumberBaseballClass extends Component {
           result: `10번 넘게 틀려서 실패! 답은 ${answer.join(',')}였습니다!`,
         })
         this.reset()
+        // this.inputRef.focus()
+        this.inputRef.current.focus()
       } else {
         //10번 이하로 틀렸을때
         for (let i = 0; i < 4; i++) {
@@ -82,13 +86,25 @@ class NumberBaseballClass extends Component {
     })
   }
 
+  inputRef = createRef()
+
+  // onInputRef = e => {
+  //   this.inputRef = e
+  // }
+
   render() {
     const { result, value, tries } = this.state
     return (
       <>
         <h1>{result}</h1>
         <form onSubmit={this.onSubmitForm}>
-          <input maxLength={4} value={value} onChange={this.onChangeInput} />
+          <input
+            ref={this.inputRef}
+            // ref={this.onInputRef}
+            maxLength={4}
+            value={value}
+            onChange={this.onChangeInput}
+          />
         </form>
         <div>시도: {tries.length}</div>
         <ul>
