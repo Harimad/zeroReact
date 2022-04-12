@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 
 const ResponseCheck = () => {
   const [state, setState] = useState('waiting')
@@ -8,17 +8,17 @@ const ResponseCheck = () => {
   const startTime = useRef(0)
   const endTime = useRef(0)
 
-  const onClickScreen = () => {
+  const onClickScreen = useCallback(() => {
     if (state === 'waiting') {
       timeout.current = setTimeout(() => {
         setState('now')
         setMessage('지금 클릭')
         startTime.current = new Date()
-      }, Math.random() * 1000 + 2000)
+      }, Math.floor(Math.random() * 1000) + 2000)
       setState('ready')
       setMessage('초록색이 되면 클릭하세요')
     } else if (state === 'ready') {
-      clearTimeout(timeout)
+      clearTimeout(timeout.current)
       setState('waiting')
       setMessage('너무 성급하시군요! 초록색이 된 후에 클릭하세요.')
     } else if (state === 'now') {
@@ -30,11 +30,11 @@ const ResponseCheck = () => {
         endTime.current - startTime.current,
       ])
     }
-  }
+  }, [state])
 
-  const onReset = () => {
+  const onReset = useCallback(() => {
     setResult([])
-  }
+  }, [])
 
   const renderAverage = () => {
     return result.length === 0 ? null : (
