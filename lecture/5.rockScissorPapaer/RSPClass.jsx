@@ -20,6 +20,16 @@ const scores = {
   보: -1,
 }
 
+const computerChoice = imgCoord => {
+  // 콘솔 확인
+  // console.log(Object.entries(rspCoords))
+  // Object.entries(rspCoords).find(v => console.log(v))
+  // Object.entries(rspCoords).find(v => console.log(v[1]))
+  // console.log(Object.entries(rspCoords).find(v => v[1] === imgCoord))
+  // console.log(Object.entries(rspCoords).find(v => v[1] === imgCoord)[0])
+  return Object.entries(rspCoords).find(v => v[1] === imgCoord)[0]
+}
+
 class RSP extends Component {
   // 1
   state = {
@@ -31,41 +41,61 @@ class RSP extends Component {
   interval
 
   // 3. 컴포넌트가 첫 렌더링된 후, 여기에 비동기 요청을 많이 해요
-
-  // 비동기 함수가 바깥에 있는 변수를 참조하면 클로저 발생
-  // 비동기 함수 안에 변수를 선언해서 쓰도록 한다.
   componentDidMount() {
-    this.interval = setInterval(() => {
-      const { imgCoord } = this.state
-      console.log('hello', this.state.imgCoord, rspCoords)
-      if (imgCoord === rspCoords.바위) {
-        console.log('바위 일때')
-        this.setState({
-          imgCoord: rspCoords.가위,
-        })
-      } else if (imgCoord === rspCoords.가위) {
-        console.log('가위 일때')
-        this.setState({
-          imgCoord: rspCoords.보,
-        })
-      } else if (imgCoord === rspCoords.보) {
-        console.log('보 일때')
-        this.setState({
-          imgCoord: rspCoords.바위,
-        })
-      }
-    }, 2000)
+    this.interval = setInterval(this.changeHand, 1000)
   }
 
   // shouldComponentUpdate() {} // 5. return true 일 경우
 
-  componentDidUpdate() {} // 6. 리랜더링 후
+  // componentDidUpdate() {} // 6. 리랜더링 후
 
-  componentWillUnmount() {} // 7. 컴포넌트가 제거되기 직전, 비동기 요청 정리를 많이 해요
+  // 7. 컴포넌트가 제거되기 직전, 비동기 요청 정리를 많이 해요
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
+  changeHand = () => {
+    const { imgCoord } = this.state
+    if (imgCoord === rspCoords.바위) {
+      this.setState({ imgCoord: rspCoords.가위 })
+    } else if (imgCoord === rspCoords.가위) {
+      this.setState({ imgCoord: rspCoords.보 })
+    } else if (imgCoord === rspCoords.보) {
+      this.setState({ imgCoord: rspCoords.바위 })
+    }
+  }
+
+  onClickBtn = choice => () => {
+    const { imgCoord } = this.state
+    clearInterval(this.interval)
+    const myScore = scores[choice]
+    const cpuScore = scores[computerChoice(imgCoord)]
+    const diff = myScore - cpuScore
+    if (diff === 0) {
+      this.setState({
+        result: '비겼습니다',
+      })
+    } else if ([-1, 2].includes(diff)) {
+      this.setState(prevState => {
+        return {
+          result: '이겼습니다',
+          score: prevState.score + 1,
+        }
+      })
+    } else {
+      this.setState(prevState => {
+        return {
+          result: '졌습니다',
+          score: prevState.score - 1,
+        }
+      })
+    }
+    setTimeout(() => {
+      this.interval = setInterval(this.changeHand, 1000)
+    }, 2000)
+  }
+
   // 2, 4(setState/props바뀔때)
-
-  onClickBtn = () => {}
-
   render() {
     const { result, imgCoord, score } = this.state
     return (
