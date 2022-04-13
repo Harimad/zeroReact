@@ -24,7 +24,7 @@ class LottoClass extends Component {
     bonus: null, // 보너스 공
     redo: false,
   }
-
+  // 비동기 함수 7개를 넣는 부분 -> 한꺼번에 비동기 함수 제거목적
   timeouts = []
 
   runTimeouts = () => {
@@ -53,7 +53,15 @@ class LottoClass extends Component {
     console.log('로또 숫자를 생성합니다.')
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate(prevProps, prevState) {
+    console.log('didUpdate')
+    if (this.state.winBalls.length === 0) {
+      this.runTimeouts()
+    }
+    if (prevState.winNumbers !== this.state.winNumbers) {
+      console.log('로또 숫자를 생성합니다.')
+    }
+  }
 
   componentWillUnmount() {
     this.timeouts.forEach(v => {
@@ -61,7 +69,16 @@ class LottoClass extends Component {
     })
   }
 
-  onClickRedo = () => {}
+  onClickRedo = () => {
+    console.log('onClickRedo')
+    this.setState({
+      winNumbers: getWinNumbers(), // 당첨 숫자들
+      winBalls: [],
+      bonus: null, // 보너스 공
+      redo: false,
+    })
+    this.timeouts = []
+  }
 
   render() {
     const { winBalls, bonus, redo } = this.state
