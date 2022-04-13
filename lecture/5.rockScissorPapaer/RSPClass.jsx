@@ -23,8 +23,6 @@ const scores = {
 const computerChoice = imgCoord => {
   // 콘솔 확인
   // console.log(Object.entries(rspCoords))
-  // Object.entries(rspCoords).find(v => console.log(v))
-  // Object.entries(rspCoords).find(v => console.log(v[1]))
   // console.log(Object.entries(rspCoords).find(v => v[1] === imgCoord))
   // console.log(Object.entries(rspCoords).find(v => v[1] === imgCoord)[0])
   return Object.entries(rspCoords).find(v => v[1] === imgCoord)[0]
@@ -90,7 +88,7 @@ class RSP extends Component {
         }
       })
     }
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.interval = setInterval(this.changeHand, 1000)
     }, 2000)
   }
