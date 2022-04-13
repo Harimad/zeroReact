@@ -1,5 +1,5 @@
-const path = require('path');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const path = require('path')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 
 module.exports = {
   name: 'lotto-dev',
@@ -12,33 +12,36 @@ module.exports = {
     app: './client',
   },
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      loader: 'babel-loader',
-      options: {
-        presets: [
-          ['@babel/preset-env', {
-            targets: {browsers: ['last 2 chrome versions']},
-            debug: true,
-          }],
-          '@babel/preset-react',
-        ],
-        plugins: ["react-refresh/babel"]
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            [
+              '@babel/preset-env',
+              {
+                targets: { browsers: ['last 2 chrome versions'] },
+                debug: true,
+              },
+            ],
+            '@babel/preset-react',
+          ],
+          plugins: ['react-refresh/babel'],
+        },
+        exclude: path.join(__dirname, 'node_modules'),
       },
-      exclude: path.join(__dirname, 'node_modules'),
-    }],
+    ],
   },
-  plugins: [
-    new ReactRefreshWebpackPlugin(),
-  ],
+  plugins: [new ReactRefreshWebpackPlugin()],
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js',
+    filename: '[dest].js',
     publicPath: '/dist',
   },
   devServer: {
     devMiddleware: { publicPath: '/dist' },
     static: { directory: path.resolve(__dirname) },
-    hot: true
-  }
-};
+    hot: true,
+  },
+}

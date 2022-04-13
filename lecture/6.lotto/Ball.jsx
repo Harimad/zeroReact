@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 const Ball = memo(({ number }) => {
   let background
-  if (nubmer <= 10) {
+  if (number <= 10) {
     background = 'red'
   } else if (number <= 20) {
     background = 'orange'
