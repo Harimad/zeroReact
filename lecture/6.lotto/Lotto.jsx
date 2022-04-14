@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react'
 import Ball from './Ball'
 
 function getWinNumbers() {
@@ -18,7 +18,10 @@ function getWinNumbers() {
 }
 
 const Lotto = () => {
-  const [winNumbers, setWinNumbers] = useState(getWinNumbers())
+  // const [winNumbers, setWinNumbers] = useState(getWinNumbers()) //getWinNumbers() 7번 호출
+  const lottoNumbers = useMemo(() => getWinNumbers(), []) // useMemo로 getWinNumbers() 리턴값 캐싱
+  const [winNumbers, setWinNumbers] = useState(lottoNumbers) // 캐싱한 값을 state초기값으로 넣음
+
   const [winBalls, setWinBalls] = useState([])
   const [bonus, setBonus] = useState(null)
   const [redo, setRedo] = useState(false)
@@ -29,12 +32,12 @@ const Lotto = () => {
     for (let i = 0; i < winNumbers.length - 1; i++) {
       timeouts.current[i] = setTimeout(() => {
         setWinBalls(prevState => [...prevState, winNumbers[i]])
-      }, (i + 1) * 1000)
+      }, (i + 1) * 300)
     }
     timeouts.current[6] = setTimeout(() => {
       setBonus(winNumbers[6])
       setRedo(true)
-    }, 7000)
+    }, 2100)
     return () => {
       timeouts.current.forEach(v => {
         clearTimeout(v)
@@ -47,14 +50,15 @@ const Lotto = () => {
     console.log('useEffect2 - 로또 숫자를 생성합니다.')
   }, [winNumbers])
 
-  const onClickRedo = () => {
+  const onClickRedo = useCallback(() => {
     console.log('onClickRedo')
+    console.log(winNumbers)
     setWinNumbers(getWinNumbers())
     setWinBalls([])
     setBonus(null)
     setRedo(false)
     timeouts.current = []
-  }
+  }, [winNumbers])
 
   return (
     <>
