@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { CLICK_CELL, CHANGE_TURN } from './TicTacToe'
 
 const Td = ({ rowIndex, cellIndex, cellData, dispatch }) => {
   console.log('  Td rendered')
 
-  const onClickTd = () => {
+  const onClickTd = useCallback(() => {
     console.log(rowIndex, cellIndex, cellData)
-    // if (cellData) {
-    //   return
-    // }
+    //이미 기존에 'O', 'X' 있으면 리턴 해서 못누르게함
+    if (cellData) {
+      return
+    }
     dispatch({ type: CLICK_CELL, row: rowIndex, cell: cellIndex })
-    dispatch({ type: CHANGE_TURN })
-  }
+  }, [cellData])
 
   return <td onClick={onClickTd}>{cellData}</td>
 }
