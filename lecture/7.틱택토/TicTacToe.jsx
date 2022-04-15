@@ -1,17 +1,21 @@
-import React, { useState, useReducer, useCallback } from 'react'
+import React, { useReducer, useCallback } from 'react'
 import Table from './Table'
 
 const initialState = {
   winner: '',
-  turn: '0',
+  turn: 'O',
   tableData: [
     ['', '', ''],
     ['', '', ''],
     ['', '', ''],
   ],
+  recentCell: [-1, -1],
 }
 
-let SET_WINNER = 'SET_WINNER'
+export const SET_WINNER = 'SET_WINNER'
+export const CLICK_CELL = 'CLICK_CELL'
+export const CHANGE_TURN = 'CHANGE_TURN'
+export const RESET_GAME = 'RESET_GAME'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -21,12 +25,42 @@ const reducer = (state, action) => {
         ...state,
         winner: action.winner,
       }
+    case CLICK_CELL: {
+      const tableData = [...state.tableData]
+      tableData[action.row] = [...tableData[action.row]]
+      tableData[action.row][action.cell] = state.turn
+      return {
+        ...state,
+        tableData,
+        recentCell: [action.row, action.cell],
+      }
+    }
+    case CHANGE_TURN: {
+      return {
+        ...state,
+        turn: state.turn === 'O' ? 'X' : 'O',
+      }
+    }
+
+    case RESET_GAME: {
+      return {
+        ...state,
+        turn: 'O',
+        tableData: [
+          ['', '', ''],
+          ['', '', ''],
+          ['', '', ''],
+        ],
+        recentCell: [-1, -1],
+      }
+    }
+    default:
+      return state
   }
 }
 
 const TicTacToe = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-
   // const [winner, setWinner] = useState('')
   // const [turn, setTurn] = useState('0')
   // const [tableData, setTableData] = useState([
@@ -41,7 +75,11 @@ const TicTacToe = () => {
 
   return (
     <>
-      <Table onClick={onClickTable} tableData={state.tableData} />
+      <Table
+        onClick={onClickTable}
+        tableData={state.tableData}
+        dispatch={dispatch}
+      />
       {state.winner && <div>{state.winner}님의 승리</div>}
     </>
   )

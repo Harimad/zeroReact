@@ -1,13 +1,22 @@
 import React from 'react'
 import Td from './Td'
 
-const Tr = ({ rowData }) => {
+const Tr = ({ rowIndex, rowData, dispatch }) => {
+  console.log('Tr rendered')
   return (
     <tr>
       {Array(rowData.length)
         .fill()
         .map((td, i) => (
-          <Td key={i}>{''}</Td>
+          <Td
+            key={i}
+            dispatch={dispatch}
+            rowIndex={rowIndex}
+            cellIndex={i}
+            cellData={rowData[i]}
+          >
+            {''}
+          </Td>
         ))}
     </tr>
   )
